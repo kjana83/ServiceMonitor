@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceWatcher", "ServiceWa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceMonitor", "ServiceMonitor\ServiceMonitor.csproj", "{2020F418-A30C-4BE4-BB64-904874C90A64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "ConsoleApplication\ConsoleApplication.csproj", "{22681C52-3A8E-42A3-8968-88EE22E5369E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{2020F418-A30C-4BE4-BB64-904874C90A64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2020F418-A30C-4BE4-BB64-904874C90A64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2020F418-A30C-4BE4-BB64-904874C90A64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22681C52-3A8E-42A3-8968-88EE22E5369E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22681C52-3A8E-42A3-8968-88EE22E5369E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22681C52-3A8E-42A3-8968-88EE22E5369E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22681C52-3A8E-42A3-8968-88EE22E5369E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
