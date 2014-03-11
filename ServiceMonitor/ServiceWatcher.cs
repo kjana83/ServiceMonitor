@@ -8,6 +8,7 @@ using System.Net;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using ServiceMonitor.Models;
 using ServiceStack.Redis;
 
@@ -18,7 +19,7 @@ namespace ServiceMonitor
 
         RedisClient client = new RedisClient();
         private IEnumerable<ServiceDto> services;
-
+        private Timer timer;
         public ServiceWatcher()
         {
             InitializeComponent();
@@ -27,11 +28,27 @@ namespace ServiceMonitor
 
         protected override void OnStart(string[] args)
         {
-            services.ToList().ForEach(p => SaveResults(InvokeService(p)));
+            this.timer = new Timer(5*60*1000); //5 mins
+            this.timer.AutoReset = true;
+            this.timer.Elapsed+=new ElapsedEventHandler(this.timer_elapsed);
+
+        }
+
+        private void timer_elapsed(object sender, ElapsedEventArgs args)
+        {
+            Main();
         }
 
         protected override void OnStop()
         {
+            this.timer.Stop();
+            this.timer = null;
+        }
+
+        private void Main()
+        {
+            services=this.client.GetAll<ServiceDto>();
+            services.ToList().ForEach(service=>SaveResults(InvokeService(service)));
         }
 
         private ServiceResultsDto InvokeService(ServiceDto service)
@@ -82,5 +99,7 @@ namespace ServiceMonitor
         {
             client.Store(serviceResults);
         }
+
+       
     }
 }

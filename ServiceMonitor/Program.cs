@@ -18,7 +18,8 @@ namespace ServiceMonitor
             ServicesToRun = new ServiceBase[] 
             { 
                 new ServiceWatcher() 
-            };ServiceBase.Run(ServicesToRun);
+            };
+            ServiceBase.Run(ServicesToRun);
         }
     }
 }
