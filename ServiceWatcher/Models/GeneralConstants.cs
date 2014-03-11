@@ -8,5 +8,6 @@ namespace ServiceWatcher.Models
     public static class GeneralConstants
     {
         public const string SERVICE = "SERVICE";
+        public const string SERVICE_ID = "SERVICEID";
     }
 }

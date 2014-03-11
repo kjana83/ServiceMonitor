@@ -16,7 +16,7 @@ var ModelAdmin = function (http) {
             Url: self.Url,
             Name: self.Name,
             SoapAction: self.SoapAction,
-            Method: self.SoapAction,
+            Method: self.Method,
             Request: self.Request,
             Keyword: self.Keyword,
             ContentType:self.ContentType

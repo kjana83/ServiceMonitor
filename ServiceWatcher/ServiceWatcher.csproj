@@ -89,7 +89,6 @@
   <ItemGroup>
     <Content Include="Admin\Index.html" />
     <Content Include="Admin\js\admin.js" />
-    <Content Include="Admin\js\service.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />

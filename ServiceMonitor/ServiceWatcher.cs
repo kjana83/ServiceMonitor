@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.ServiceProcess;
 using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 using ServiceMonitor.Models;
 using ServiceStack.Redis;
@@ -31,7 +27,6 @@ namespace ServiceMonitor
             this.timer = new Timer(5*60*1000); //5 mins
             this.timer.AutoReset = true;
             this.timer.Elapsed+=new ElapsedEventHandler(this.timer_elapsed);
-
         }
 
         private void timer_elapsed(object sender, ElapsedEventArgs args)

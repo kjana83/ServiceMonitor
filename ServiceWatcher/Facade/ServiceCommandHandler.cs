@@ -1,22 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using ServiceWatcher.Facade.Interface;
+﻿using ServiceWatcher.Facade.Interface;
 using ServiceWatcher.Models;
 using ServiceStack.Redis;
 
 namespace ServiceWatcher.Facade
 {
+    /// <summary>
+    /// Command for save the services.
+    /// </summary>
     public class ServiceCommandHandler : ICommandHandler<ServiceDto>
     {
-        private RedisClient client = new RedisClient();
-
+        /// <summary>
+        /// Executes the specified input.
+        /// </summary>
+        /// <param name="input">The input.</param>
         public void Execute(ServiceDto input)
         {
-            client.Store(input);
+            using (var client = new RedisClient())
+            {
+                client.Increment(GeneralConstants.SERVICE_ID,1);
+                input.Id=client.Get<int>(GeneralConstants.SERVICE_ID);
+                var clientService = client.As<ServiceDto>();
+                clientService.Lists[GeneralConstants.SERVICE].Add(input);
+            }
+
         }
     }
 }
