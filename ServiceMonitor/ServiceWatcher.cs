@@ -1,100 +1,72 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.ServiceProcess;
-using System.Text;
 using System.Timers;
 using ServiceMonitor.Models;
 using ServiceStack.Redis;
 
 namespace ServiceMonitor
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class ServiceWatcher : ServiceBase
     {
 
-        RedisClient client = new RedisClient();
         private IEnumerable<ServiceDto> services;
         private Timer timer;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceWatcher"/> class.
+        /// </summary>
         public ServiceWatcher()
         {
             InitializeComponent();
-            services = this.client.GetAll<ServiceDto>();
         }
 
+        /// <summary>
+        /// When implemented in a derived class, executes when a Start command is sent to the service by the Service Control Manager (SCM) or when the operating system starts (for a service that starts automatically). Specifies actions to take when the service starts.
+        /// </summary>
+        /// <param name="args">Data passed by the start command.</param>
         protected override void OnStart(string[] args)
         {
-            this.timer = new Timer(5*60*1000); //5 mins
+            this.timer = new Timer(5 * 60 * 1000); //5 mins
             this.timer.AutoReset = true;
-            this.timer.Elapsed+=new ElapsedEventHandler(this.timer_elapsed);
+            this.timer.Elapsed += new ElapsedEventHandler(this.timer_elapsed);
         }
 
+        /// <summary>
+        /// Handles the elapsed event of the timer control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="args">The <see cref="ElapsedEventArgs"/> instance containing the event data.</param>
         private void timer_elapsed(object sender, ElapsedEventArgs args)
         {
             Main();
         }
 
+        /// <summary>
+        /// When implemented in a derived class, executes when a Stop command is sent to the service by the Service Control Manager (SCM). Specifies actions to take when a service stops running.
+        /// </summary>
         protected override void OnStop()
         {
             this.timer.Stop();
             this.timer = null;
         }
 
+        /// <summary>
+        /// Defines the entry point of the application.
+        /// </summary>
         private void Main()
         {
-            services=this.client.GetAll<ServiceDto>();
-            services.ToList().ForEach(service=>SaveResults(InvokeService(service)));
-        }
-
-        private ServiceResultsDto InvokeService(ServiceDto service)
-        {
-            var serviceResults = new ServiceResultsDto
+            using (var client = new RedisClient())
             {
-                ServiceId = service.Id,
-                Date = DateTime.Now,
-                Status = "Amber"
-            };
-
-            try
-            {
-                var request = (HttpWebRequest)WebRequest.Create(service.Url);
-                request.ContentType = service.ContentType;
-                request.Method = service.Method;
-
-                if (service.Method == "Post")
-                {
-                    var dataStream = request.GetRequestStream();
-                    var byteArray = Encoding.UTF8.GetBytes(service.Request);
-                    dataStream.Write(byteArray, 0, byteArray.Length);
-                    dataStream.Close();
-                }
-
-                var response = (HttpWebResponse)request.GetResponse();
-                var responseStream = response.GetResponseStream();
-                var result = new byte[response.ContentLength];
-                var content = responseStream.Read(result, 0, (int)response.ContentLength);
-                var resultString = Encoding.UTF8.GetString(result);
-                if (resultString.Contains(service.Keyword))
-                {
-                    serviceResults.Status = "Green";
-                }
-                serviceResults.Response = resultString;
-
+                var clientServices = client.As<ServiceDto>();
+                services = clientServices.Lists["SERVICE"].ToList();
             }
-            catch (Exception exception)
-            {
-                serviceResults.Status = "Red";
-                serviceResults.Response = exception.Message;
-            }
-
-            return serviceResults;
+            services.ToList().ForEach(service => ServiceMonitor.SaveResults(ServiceMonitor.InvokeService(service)));
         }
 
-        private void SaveResults(ServiceResultsDto serviceResults)
-        {
-            client.Store(serviceResults);
-        }
 
-       
+
     }
 }

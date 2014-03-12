@@ -11,28 +11,38 @@ using ServiceWatcher.Models;
 
 namespace ServiceWatcher.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ServiceAdminController : ApiController
     {
         private readonly IQueryFor<EmptyParameter, IEnumerable<ServiceDto>> serviceAdmin;
         private readonly ICommandHandler<ServiceDto> serviceCommandHandler;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceAdminController"/> class.
+        /// </summary>
         public ServiceAdminController()
         {
             serviceAdmin=new ServiceQuery();
             serviceCommandHandler=new ServiceCommandHandler();
         }
 
-        //public ServiceAdminController(IQueryFor<EmptyParameter, IEnumerable<ServiceDto>> serviceAdmin)
-        //{
-        //    serviceAdmin = serviceAdmin;
-        //}
-
+        /// <summary>
+        /// Posts the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <returns></returns>
         public HttpResponseMessage Post([FromBody]ServiceDto service)
         {
             this.serviceCommandHandler.Execute(service);
             return this.Request.CreateResponse(HttpStatusCode.Created);
         }
 
+        /// <summary>
+        /// Gets this instance.
+        /// </summary>
+        /// <returns></returns>
         public HttpResponseMessage Get()
         {
             return this.Request.CreateResponse(HttpStatusCode.OK,

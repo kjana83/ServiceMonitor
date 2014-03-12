@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using ServiceStack.Redis;
 
 namespace ConsoleApplication
 {
     class Program
     {
-
-        private static RedisClient client = new RedisClient();
         private static List<ServiceDto> services;
 
         static void Main(string[] args)
         {
 
-            var clientServices = client.As<ServiceDto>();
-            services = clientServices.Lists["SERVICES"].ToList();
+            using (var client = new RedisClient())
+            {
+                var clientServices = client.As<ServiceDto>();
+                services = clientServices.Lists["SERVICE"].ToList();
+            }
             services.ForEach(service => SaveResults(InvokeService(service)));
         }
 
@@ -46,8 +45,9 @@ namespace ConsoleApplication
                     dataStream.Write(byteArray, 0, byteArray.Length);
                     dataStream.Close();
                 }
-
+                var requestTimeSpan = DateTime.Now;
                 var response = (HttpWebResponse)request.GetResponse();
+                var responseTimeSpan = DateTime.Now;
                 var responseStream = response.GetResponseStream();
                 var result = new byte[response.ContentLength];
                 var content = responseStream.Read(result, 0, (int)response.ContentLength);
@@ -56,6 +56,7 @@ namespace ConsoleApplication
                 {
                     serviceResults.Status = "Green";
                 }
+                serviceResults.Duration=responseTimeSpan - requestTimeSpan;
                 serviceResults.Response = resultString;
 
             }
@@ -70,7 +71,13 @@ namespace ConsoleApplication
 
         private static void SaveResults(ServiceResultsDto serviceResults)
         {
-            client.Store(serviceResults);
+            using (var client = new RedisClient())
+            {
+                client.Increment("SERVICE_RESULTS_ID", 1);
+                serviceResults.Id = client.Get<int>("SERVICE_RESULTS_ID");
+                var clientService = client.As<ServiceResultsDto>();
+                clientService.Lists["SERVICE_RESULTS"].Add(serviceResults);
+            }
         }
 
 
