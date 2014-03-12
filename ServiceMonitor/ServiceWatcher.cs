@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.ServiceProcess;
 using System.Timers;
@@ -29,7 +31,10 @@ namespace ServiceMonitor
         /// <param name="args">Data passed by the start command.</param>
         protected override void OnStart(string[] args)
         {
-            this.timer = new Timer(5 * 60 * 1000); //5 mins
+            Main();
+            var interval = Double.Parse(ConfigurationManager.AppSettings["Interval"]);
+            this.timer = new Timer( interval * 60 * 1000); //5 mins
+            this.timer.Start();
             this.timer.AutoReset = true;
             this.timer.Elapsed += new ElapsedEventHandler(this.timer_elapsed);
         }
