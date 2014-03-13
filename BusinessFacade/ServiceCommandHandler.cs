@@ -1,8 +1,8 @@
-﻿using ServiceWatcher.Facade.Interface;
-using ServiceWatcher.Models;
+﻿using BusinessFacade.Interface;
+using BusinessFacade.Models;
 using ServiceStack.Redis;
 
-namespace ServiceWatcher.Facade
+namespace BusinessFacade
 {
     /// <summary>
     /// Command for save the services.
@@ -17,12 +17,11 @@ namespace ServiceWatcher.Facade
         {
             using (var client = new RedisClient())
             {
-                client.Increment(GeneralConstants.SERVICE_ID,1);
-                input.Id=client.Get<int>(GeneralConstants.SERVICE_ID);
+                client.Increment(GeneralConstants.SERVICE_ID, 1);
+                input.Id = client.Get<int>(GeneralConstants.SERVICE_ID);
                 var clientService = client.As<ServiceDto>();
                 clientService.Lists[GeneralConstants.SERVICE].Add(input);
             }
-
         }
     }
 }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
+using BusinessFacade.Interface;
+using BusinessFacade.Models;
 using ServiceStack.Redis;
-using ServiceWatcher.Facade.Interface;
-using ServiceWatcher.Models;
+using System.Collections.Generic;
 
-namespace ServiceWatcher.Facade
+namespace BusinessFacade
 {
     /// <summary>
     /// Query to fetch the services
@@ -25,7 +23,6 @@ namespace ServiceWatcher.Facade
                 var serviceClient = redisClient.As<ServiceDto>();
                 return serviceClient.Lists[GeneralConstants.SERVICE].ToList();
             }
-
         }
     }
 }

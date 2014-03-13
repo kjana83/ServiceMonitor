@@ -1,22 +1,23 @@
-﻿using System;
+﻿using BusinessFacade;
+using BusinessFacade.Interface;
+using BusinessFacade.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.ServiceProcess;
 using System.Timers;
-using ServiceMonitor.Models;
-using ServiceStack.Redis;
 
 namespace ServiceMonitor
 {
     /// <summary>
-    /// 
+    /// To monitor the services
     /// </summary>
     public partial class ServiceWatcher : ServiceBase
     {
-
         private IEnumerable<ServiceDto> services;
         private Timer timer;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceWatcher"/> class.
         /// </summary>
@@ -26,14 +27,16 @@ namespace ServiceMonitor
         }
 
         /// <summary>
-        /// When implemented in a derived class, executes when a Start command is sent to the service by the Service Control Manager (SCM) or when the operating system starts (for a service that starts automatically). Specifies actions to take when the service starts.
+        /// When implemented in a derived class,
+        /// executes when a Start command is sent to the service by the Service Control Manager (SCM) or
+        /// when the operating system starts (for a service that starts automatically). Specifies actions to take when the service starts.
         /// </summary>
         /// <param name="args">Data passed by the start command.</param>
         protected override void OnStart(string[] args)
         {
             Main();
             var interval = Double.Parse(ConfigurationManager.AppSettings["Interval"]);
-            this.timer = new Timer( interval * 60 * 1000); //5 mins
+            this.timer = new Timer(interval * 60 * 1000); //5 mins
             this.timer.Start();
             this.timer.AutoReset = true;
             this.timer.Elapsed += new ElapsedEventHandler(this.timer_elapsed);
@@ -50,7 +53,9 @@ namespace ServiceMonitor
         }
 
         /// <summary>
-        /// When implemented in a derived class, executes when a Stop command is sent to the service by the Service Control Manager (SCM). Specifies actions to take when a service stops running.
+        /// When implemented in a derived class,
+        /// executes when a Stop command is sent to the service by the Service Control Manager (SCM).
+        /// Specifies actions to take when a service stops running.
         /// </summary>
         protected override void OnStop()
         {
@@ -63,15 +68,9 @@ namespace ServiceMonitor
         /// </summary>
         private void Main()
         {
-            using (var client = new RedisClient())
-            {
-                var clientServices = client.As<ServiceDto>();
-                services = clientServices.Lists["SERVICE"].ToList();
-            }
+            IQueryFor<EmptyParameter, IEnumerable<ServiceDto>> serviceQuery = new ServiceQuery();
+            services = serviceQuery.ExecuteQueryWith(new EmptyParameter());
             services.ToList().ForEach(service => ServiceMonitor.SaveResults(ServiceMonitor.InvokeService(service)));
         }
-
-
-
     }
 }

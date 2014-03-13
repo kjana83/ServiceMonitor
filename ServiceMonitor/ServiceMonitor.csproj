@@ -58,9 +58,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\GeneralConstants.cs" />
-    <Compile Include="Models\ServiceDto.cs" />
-    <Compile Include="Models\ServiceResultsDto.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -88,6 +85,12 @@
     <EmbeddedResource Include="ServiceWatcher.resx">
       <DependentUpon>ServiceWatcher.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessFacade\BusinessFacade.csproj">
+      <Project>{61266bf0-a2d5-4b78-a464-0070c6ca8cf0}</Project>
+      <Name>BusinessFacade</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

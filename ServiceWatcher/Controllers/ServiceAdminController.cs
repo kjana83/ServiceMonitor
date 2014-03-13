@@ -1,18 +1,15 @@
-﻿using System;
+﻿using BusinessFacade;
+using BusinessFacade.Interface;
+using BusinessFacade.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using ServiceStack.Commands;
-using ServiceWatcher.Facade;
-using ServiceWatcher.Facade.Interface;
-using ServiceWatcher.Models;
 
 namespace ServiceWatcher.Controllers
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class ServiceAdminController : ApiController
     {
@@ -24,8 +21,8 @@ namespace ServiceWatcher.Controllers
         /// </summary>
         public ServiceAdminController()
         {
-            serviceAdmin=new ServiceQuery();
-            serviceCommandHandler=new ServiceCommandHandler();
+            serviceAdmin = new ServiceQuery();
+            serviceCommandHandler = new ServiceCommandHandler();
         }
 
         /// <summary>

@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using BusinessFacade;
+using BusinessFacade.Interface;
+using BusinessFacade.Models;
+using System;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using ServiceMonitor.Models;
-using ServiceStack.Redis;
 
 namespace ServiceMonitor
 {
     /// <summary>
-    /// 
+    /// To monitor the service
     /// </summary>
     public static class ServiceMonitor
     {
@@ -54,9 +52,8 @@ namespace ServiceMonitor
                 {
                     serviceResults.Status = "Green";
                 }
-                
-                serviceResults.Response = resultString;
 
+                serviceResults.Response = resultString;
             }
             catch (Exception exception)
             {
@@ -73,13 +70,9 @@ namespace ServiceMonitor
         /// <param name="serviceResults">The service results.</param>
         public static void SaveResults(ServiceResultsDto serviceResults)
         {
-            using (var client = new RedisClient())
-            {
-                client.Increment("SERVICE_RESULTS_ID", 1);
-                serviceResults.Id = client.Get<int>("SERVICE_RESULTS_ID");
-                var clientService = client.As<ServiceResultsDto>();
-                clientService.Lists["SERVICE_RESULTS"].Add(serviceResults);
-            }
+            ICommandHandler<ServiceResultsDto> serviceResultsCommandHandler = new ServiceResultsCommandHandler();
+
+            serviceResultsCommandHandler.Execute(serviceResults);
         }
     }
 }

@@ -90,7 +90,6 @@ function minErr(module) {
  */
 
 function setupModuleLoader(window) {
-
   var $injectorMinErr = minErr('$injector');
   var ngMinErr = minErr('ng');
 
@@ -211,7 +210,6 @@ function setupModuleLoader(window) {
            * @description
            */
           name: name,
-
 
           /**
            * @ngdoc method
@@ -388,7 +386,6 @@ function setupModuleLoader(window) {
       });
     };
   });
-
 }
 
 setupModuleLoader(window);
@@ -411,4 +408,3 @@ setupModuleLoader(window);
  * } }
  */
 angular.Module;
-

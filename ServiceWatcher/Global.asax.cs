@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
-using System.Web.Routing;
-using ServiceWatcher.Facade;
-using ServiceWatcher.Facade.Interface;
-using StructureMap;
+﻿using System.Web.Http;
 
 namespace ServiceWatcher
 {
@@ -17,7 +9,6 @@ namespace ServiceWatcher
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             //this.RegisterTypes();
-
         }
 
         //private void RegisterTypes()

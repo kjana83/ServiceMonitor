@@ -7,13 +7,12 @@ using ServiceStack.Redis;
 
 namespace ConsoleApplication
 {
-    class Program
+    internal class Program
     {
         private static List<ServiceDto> services;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-
             using (var client = new RedisClient())
             {
                 var clientServices = client.As<ServiceDto>();
@@ -21,7 +20,6 @@ namespace ConsoleApplication
             }
             services.ForEach(service => SaveResults(InvokeService(service)));
         }
-
 
         private static ServiceResultsDto InvokeService(ServiceDto service)
         {
@@ -56,9 +54,8 @@ namespace ConsoleApplication
                 {
                     serviceResults.Status = "Green";
                 }
-                serviceResults.Duration=responseTimeSpan - requestTimeSpan;
+                serviceResults.Duration = responseTimeSpan - requestTimeSpan;
                 serviceResults.Response = resultString;
-
             }
             catch (Exception exception)
             {
@@ -79,7 +76,5 @@ namespace ConsoleApplication
                 clientService.Lists["SERVICE_RESULTS"].Add(serviceResults);
             }
         }
-
-
     }
 }

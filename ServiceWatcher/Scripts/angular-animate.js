@@ -305,7 +305,6 @@ angular.module('ngAnimate', ['ng'])
 
     $provide.decorator('$animate', ['$delegate', '$injector', '$sniffer', '$rootElement', '$$asyncCallback', '$rootScope', '$document',
                             function($delegate,   $injector,   $sniffer,   $rootElement,   $$asyncCallback,    $rootScope,   $document) {
-
       var globalAnimationCounter = 0;
       $rootElement.data(NG_ANIMATE_STATE, rootAnimateState);
 
@@ -771,7 +770,6 @@ angular.module('ngAnimate', ['ng'])
         and the onComplete callback will be fired once the animation is fully complete.
       */
       function performAnimation(animationEvent, className, element, parentElement, afterElement, domOperation, doneCallback) {
-
         var runner = animationRunner(element, animationEvent, className);
         if(!runner) {
           fireDOMOperation();
@@ -1535,7 +1533,6 @@ angular.module('ngAnimate', ['ng'])
 
         beforeAddClass : function(element, className, animationCompleted) {
           var cancellationMethod = animateBefore('addClass', element, suffixClasses(className, '-add'), function(fn) {
-
             /* when a CSS class is added to an element then the transition style that
              * is applied is the transition defined on the element when the CSS class
              * is added at the time of the animation. This is how CSS3 functions
@@ -1609,6 +1606,4 @@ angular.module('ngAnimate', ['ng'])
       }
     }]);
   }]);
-
-
 })(window, window.angular);

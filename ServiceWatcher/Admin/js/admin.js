@@ -12,7 +12,7 @@ var ModelAdmin = function (http) {
     this.ContentType = 'application/json';
     this.IsCreated = false;
     this.CreateService = function () {
-        var service = {            
+        var service = {
             Url: self.Url,
             Name: self.Name,
             SoapAction: self.SoapAction,
@@ -24,7 +24,6 @@ var ModelAdmin = function (http) {
         http.post('/api/ServiceAdmin', service).success(function(data,status,headers,config) {
             self.IsCreated = true;
         }).error(function(data,status,headers,config) {
-            
         });
     };
     this.ServiceList = [];
@@ -32,10 +31,8 @@ var ModelAdmin = function (http) {
         http.get('/api/ServiceAdmin').success(function (data, status, headers, config) {
             self.ServiceList = angular.fromJson(data);
         }).error(function (data, status, headers, config) {
-
         });
     };
-
 };
 
 adminModule.service('AdminService', ['$http', function (http) {

@@ -38,7 +38,6 @@ var $sanitizeMinErr = angular.$$minErr('$sanitize');
  *
  */
 
-
 /**
  * @ngdoc service
  * @name $sanitize
@@ -155,7 +154,6 @@ function sanitizeText(chars) {
   return buf.join('');
 }
 
-
 // Regular Expressions for parsing tags and attributes
 var START_TAG_REGEXP =
        /^<\s*([\w:-]+)((?:\s+[\w:-]+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)\s*>/,
@@ -168,7 +166,6 @@ var START_TAG_REGEXP =
   CDATA_REGEXP = /<!\[CDATA\[(.*?)]]>/g,
   // Match everything outside of normal chars and " (quote character)
   NON_ALPHANUMERIC_REGEXP = /([^\#-~| |!])/g;
-
 
 // Good source of info about elements and attributes
 // http://dev.w3.org/html5/spec/Overview.html#semantics
@@ -196,7 +193,6 @@ var inlineElements = angular.extend({}, optionalEndTagInlineElements, makeMap("a
         "bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s," +
         "samp,small,span,strike,strong,sub,sup,time,tt,u,var"));
 
-
 // Special Elements (can contain anything)
 var specialElements = makeMap("script,style");
 
@@ -221,7 +217,6 @@ function makeMap(str) {
   return obj;
 }
 
-
 /**
  * @example
  * htmlParser(htmlString, {
@@ -243,7 +238,6 @@ function htmlParser( html, handler ) {
 
     // Make sure we're not in a script or style element
     if ( !stack.last() || !specialElements[ stack.last() ] ) {
-
       // Comment
       if ( html.indexOf("<!--") === 0 ) {
         // comments containing -- are not allowed unless they terminate the comment
@@ -291,7 +285,6 @@ function htmlParser( html, handler ) {
 
         if (handler.chars) handler.chars( decodeEntities(text) );
       }
-
     } else {
       html = html.replace(new RegExp("(.*)<\\s*\\/\\s*" + stack.last() + "[^>]*>", 'i'),
         function(all, text){
@@ -467,7 +460,6 @@ function htmlSanitizeWriter(buf, uriValidator){
   };
 }
 
-
 // define ngSanitize module and register $sanitize service
 angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
 
@@ -619,6 +611,4 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
     }
   };
 }]);
-
-
 })(window, window.angular);
