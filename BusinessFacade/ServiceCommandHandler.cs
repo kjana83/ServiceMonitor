@@ -1,4 +1,6 @@
-﻿using BusinessFacade.Interface;
+﻿using System;
+using System.Configuration;
+using BusinessFacade.Interface;
 using BusinessFacade.Models;
 using ServiceStack.Redis;
 
@@ -17,6 +19,8 @@ namespace BusinessFacade
         {
             using (var client = new RedisClient())
             {
+                client.ChangeDb(Int32.Parse(ConfigurationManager.AppSettings["DBNAME"]));
+
                 client.Increment(GeneralConstants.SERVICE_ID, 1);
                 input.Id = client.Get<int>(GeneralConstants.SERVICE_ID);
                 var clientService = client.As<ServiceDto>();

@@ -40,7 +40,7 @@ adminModule.service('AdminService', ['$http', function (http) {
     return model;
 }]);
 
-adminModule.controller('AdminController', ['AdminService', '$rootScope', function(adminService,$rootScope) {
-    $rootScope.Model = adminService;
-    $rootScope.Model.GetService();
+adminModule.controller('AdminController', ['AdminService', '$scope', function(adminService,$scope) {
+    $scope.Model = adminService;
+    $scope.Model.GetService();
 }]);

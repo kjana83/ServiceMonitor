@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+    <script src="../Scripts/jquery-1.9.1.min.js"></script>
+    <script src="../Scripts/bootstrap.min.js"></script>
+    <script src="../Scripts/angular.min.js"></script>
+    <script src="js/service.js"></script>
+    <title>Service Manager - Results</title>
+</head>
+<body data-ng-app="Service">
+    <div class="container" data-ng-controller="ServiceController">
+        <div class="page-header">
+            <h1>Service Monitor</h1>
+            <h4>Status</h4>
+        </div>
+
+        <div class="col-sm-10" data-ng-repeat="service in Model.Results">
+            <div class="row">
+                <div class="col-sm-1" data-ng-bind="service.ServiceId"></div>
+                <div class="col-sm-3" data-ng-bind="service.Name"></div>
+                <div class="col-sm-2" data-ng-bind="service.Url"></div>
+                <div class="col-sm-1" data-ng-bind="service.Status"></div>
+                <div class="col-sm-2" data-ng-bind="service.Duration"></div>
+                <div class="col-sm-3" data-ng-bind="service.Date"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

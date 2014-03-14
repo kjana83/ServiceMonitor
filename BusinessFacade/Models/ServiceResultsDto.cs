@@ -2,6 +2,9 @@
 
 namespace BusinessFacade.Models
 {
+    /// <summary>
+    /// Service results dto
+    /// </summary>
     public class ServiceResultsDto
     {
         public int Id { get; set; }
